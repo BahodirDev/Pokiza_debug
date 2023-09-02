@@ -1,0 +1,93 @@
+type Query {
+	orders(
+		orderId: ID
+		search: String
+		transportId: ID
+		clientId: [ID!]
+		branchId: [ID!]
+		isPaid: Boolean
+		isDeleted: Boolean = false
+		orderSpecial: Boolean
+		orderStatus: [StatusValue!] 
+		sort: OrderSort = {}
+		pagination: Pagination = {} 
+		dateFilter: OrderDateFilter = {}
+		addressFilter: AddressFilter = {}
+	): [Order!]!
+}
+
+type Mutation {
+	addOrder(
+		clientId: ID
+		special: Boolean!
+		summary: String
+		bringTime: DateTime
+		address: AddressInput!
+	): MutationResponse!
+
+	changeOrder(
+		orderId: ID!
+		bringTime: DateTime
+		special: Boolean
+		summary: String
+		address: AddressInput
+	): MutationResponse!
+
+	changeOrderStatus(orderId: ID! status: StatusValue!): MutationResponse!
+
+	deleteOrder(orderId: [ID!]!): MutationResponses!
+	restoreOrder(orderId: [ID!]!): MutationResponses!
+}
+
+type Order {
+	orderId: ID!
+	special: Boolean!
+	summary: String
+	price: Float
+	client: Client!
+	branch: Branch!
+	address: Address!
+	status: Status!
+	transport: Transport
+	transportsList: [TransportDetail!]
+	products: [Product]!
+	statusProcess: [Status!]!
+	bringTimeRemaining: Second
+	deliveryTimeRemaining: Second
+	bringTime: DateTime
+	broughtTime: DateTime
+	deliveryTime: DateTime
+	deliveredTime: DateTime
+	orderCreatedAt: DateTime!
+	orderDeletedAt: DateTime
+	paid: Boolean!
+	count: Int
+}
+
+type TransportDetail {
+	direction: BindType!
+	transport: Transport!
+	finished: Boolean!
+	driver: Staff
+}
+
+input OrderDateFilter {
+	bringTime: RangeDate
+	broughtTime: RangeDate
+	deliveryTime: RangeDate
+	deliveredTime: RangeDate
+	orderCreatedAt: RangeDate
+}
+
+input OrderSort {
+	orderId: SortOptions
+	orderStatus: SortOptions
+	orderPrice: SortOptions
+	addressDistance: SortOptions
+	firstName: SortOptions
+	lastName: SortOptions
+	bringTime: SortOptions
+	broughtTime: SortOptions
+	deliveryTime: SortOptions
+	deliveredTime: SortOptions
+}

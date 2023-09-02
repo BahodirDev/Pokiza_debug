@@ -1,0 +1,84 @@
+type Query {
+	products(
+		productId: ID
+		search: String
+		transportId: ID
+		clientId: [ID!]
+		branchId: [ID!]
+		orderId: [ID!]
+		serviceId: [ID!]
+		isPaid: Boolean
+		isDeleted: Boolean = false
+		productSpecial: Boolean
+		productStatus: [StatusValue!]
+		sort: ProductSort = {}
+		productPrice: Range = {}
+		pagination: Pagination = {} 
+		dateFilter: ProductDateFilter = {}
+		addressFilter: AddressFilter = {}
+	): [Product!]!
+}
+
+type Mutation {
+	addProduct(
+		orderId: ID!
+		serviceId: ID!
+		file: Upload
+		productSizeDetails: Object!
+		productSummary: String
+	): MutationResponse!
+
+	changeProduct(
+		productId: ID!
+		serviceId: ID
+		file: Upload
+		productSizeDetails: Object
+		productSummary: String
+	): MutationResponse!
+
+	changeProductStatus(productId: ID! status: StatusValue!): MutationResponse!
+
+	deleteProduct(productId: [ID!]!): MutationResponses!
+	restoreProduct(productId: [ID!]!): MutationResponses!
+}
+
+type Product {
+	productId: ID!
+	productPrice: Int
+	productSize: Float!
+	productSpecial: Boolean
+	productImg: Link
+	productSizeDetails: Any!
+	productStatus: Status!
+	transport: Transport
+	transportsList: [TransportDetail!]
+	productStatusProcess: [Status!]!
+	productSummary: String
+	service: Service!
+	order: Order!
+	count: Int
+	productCreatedAt: DateTime!
+	productDeletedAt: DateTime
+}
+
+input ProductDateFilter {
+	bringTime: RangeDate
+	broughtTime: RangeDate
+	deliveryTime: RangeDate
+	deliveredTime: RangeDate
+	productCreatedAt: RangeDate
+}
+
+input ProductSort {
+	productId: SortOptions
+	productPrice: SortOptions
+	addressDistance: SortOptions
+	orderId: SortOptions
+	productStatus: SortOptions
+	firstName: SortOptions
+	lastName: SortOptions
+	bringTime: SortOptions
+	broughtTime: SortOptions
+	deliveryTime: SortOptions
+	deliveredTime: SortOptions
+}

@@ -1,0 +1,48 @@
+type Query {
+	staffs(
+		staffId: ID
+		search: String
+		isDeleted: Boolean = false
+		sort: UserSort = {}
+		pagination: Pagination = {} 
+		addressFilter: AddressFilter = {}
+		userInfoFilter: UserFilter = {}
+	): [Staff!]!
+}
+
+type Mutation {
+	addStaff(
+		mainContact: Contact!
+		password: Password!
+		branchId: ID!
+		file: Upload
+		staffSummary: String
+		userInfo: UserInput! 
+		userAddress: AddressInput!
+	): MutationResponse!
+
+	changeStaff(
+		staffId: ID!
+		password: Password
+		branchId: ID
+		file: Upload
+		staffSummary: String
+		userInfo: UserInput = {}
+		userAddress: AddressInput = {}
+	): MutationResponse!
+
+	deleteStaff(staffId: [ID!]): MutationResponses!
+	restoreStaff(staffId: [ID!]): MutationResponses!
+	
+	loginStaff(mainContact: String! password: String!): AuthResponse!
+}
+
+type Staff {
+	staffId: ID!
+	count: Int!
+	staffImg: Link
+	userInfo: User!
+	staffSummary: String
+	staffCreatedAt: DateTime!
+	staffDeletedAt: DateTime
+}

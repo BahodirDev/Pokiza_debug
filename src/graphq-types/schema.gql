@@ -1,0 +1,83 @@
+# scalars that have type check
+scalar Upload
+scalar DateTime
+scalar Date
+scalar ID
+scalar SVG
+scalar Contact
+scalar Password
+scalar StatusValue
+scalar Object
+
+# simple scalars that do not have type check
+scalar Any
+scalar Link
+scalar Token
+scalar Code
+scalar Hour
+scalar Second
+
+
+# unions
+union AllTypes = Branch | State | Region | Neighborhood | Street | Area | SocialSet | Client | Staff | Service | DeliveryHour | Order | Product | Transport | Permission  | PermissionGroup | OrderTransaction | DebtTransaction | MoneyTransaction | Expanse | ExpanseTransaction | FondTransaction 
+union UserType = Staff | Client
+
+#enums
+enum Gender {
+	male
+	female
+}
+
+enum SortOptions {
+	toSmallest
+	toLargest
+}
+
+enum BindType {
+	deliver
+	bring
+}
+
+# inputs
+input Range {
+	from: Int!
+	to: Int!
+}
+
+input RangeDate {
+	from: DateTime!
+	to: DateTime!
+}
+
+input Pagination {
+	limit: Int = 300
+	page: Int = 1
+}
+
+# types
+type MutationResponse {
+	status: Any!
+	message: String!
+	data: AllTypes
+}
+
+type MutationResponses {
+	status: Any!
+	message: String!
+	data: [AllTypes]
+}
+
+type AuthResponse {
+	status: Any!
+	message: String!
+	registered: Boolean!
+	data: UserType
+	token: Token
+}
+
+type AuthResponseWithoutType {
+	status: Any!
+	message: String!
+	registered: Boolean!
+	token: Token
+}

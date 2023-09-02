@@ -1,0 +1,88 @@
+type Query {
+	transports(
+		transportId: ID
+		search: String
+		productId: ID
+		orderId: ID
+		staffId: ID
+		branchId: [ID!]
+		available: Boolean
+		isDeleted: Boolean = false
+		sort: TransportSort = {}
+		pagination: Pagination = {} 
+	): [Transport!]!
+}
+
+type Mutation {
+	addTransport(
+		file: Upload
+		branchId: ID!
+		transportModel: String!
+		transportColor: String!
+		transportNumber: String!
+		transportSummary: String
+	): MutationResponse!
+
+	changeTransport(
+		transportId: ID!
+		file: Upload
+		branchId: ID
+		transportModel: String
+		transportColor: String
+		transportNumber: String
+		transportBroken: Boolean
+		transportSummary: String
+	): MutationResponse!
+
+	deleteTransport(transportId: [ID!]!): MutationResponses!
+	restoreTransport(transportId: [ID!]!): MutationResponses!
+
+	bindOrder(
+		transportId: ID!
+		orderId: [ID!]
+		productId: [ID!]
+		type: BindType!
+	): MutationResponses!
+
+	unbindOrder(
+		orderId: [ID!]
+		productId: [ID!]
+	): MutationResponses!
+
+	registerTransport(staffId: ID! transportId: ID!): MutationResponse!
+	unregisterTransport(transportId: ID!): MutationResponse!
+}
+
+type Transport {
+	transportId: ID!
+	transportImg: Link!
+	transportModel: String!
+	transportColor: String!
+	transportNumber: String!
+	transportSummary: String
+	transportBroken: Boolean!
+	transportCreatedAt: DateTime!
+	transportDeletedAt: DateTime
+	transportRegistered: Boolean!
+	transportOrderLoaded: Boolean!
+	driversList: [Driver!]
+	driver: Driver
+	branch: Branch!
+	count: Int
+	ordersCount: Int!
+	bringingOrdersCount: Int!
+	deliveringOrdersCount: Int!
+	productsCount: Int!
+	bringingProductsCount: Int!
+	deliveringProductsCount: Int!
+}
+
+type Driver {
+	staff: Staff!
+	registeredAt: DateTime!
+	unRegisteredAt: DateTime
+}
+
+input TransportSort {
+	transportId: SortOptions
+}

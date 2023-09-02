@@ -1,0 +1,46 @@
+type Query {
+	user: UserInfo!
+}
+
+type UserInfo {
+	staff: Boolean!
+	client: Boolean!
+	user: UserType
+}
+
+type User {
+	userId: ID!
+	mainContact: Contact
+	secondContact: Contact
+	firstName: String!
+	lastName: String
+	birthDate: Date
+	age: Int
+	gender: Gender
+	branch: Branch!
+	address: Address!
+	joinedAt: DateTime!
+}
+
+input UserFilter {
+	age: Range
+	gender: Gender
+	branchId: [ID!]
+}
+
+input UserInput {
+	firstName: String
+	lastName: String
+	mainContact: Contact
+	secondContact: Contact
+	birthDate: Date
+	gender: Gender
+}
+
+input UserSort {
+	userId: SortOptions
+	firstName: SortOptions
+	lastName: SortOptions
+	age: SortOptions
+	userCreatedAt: SortOptions
+}

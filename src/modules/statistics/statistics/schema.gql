@@ -1,0 +1,143 @@
+type Query {
+	ordersCountStatistics(
+		branchId: [ID!]
+		dateFilter: RangeDate = {}
+		addressFilter: AddressFilter = {}
+	): OrdersCountStatistics!
+
+	productServiceCountStatistics(
+		branchId: [ID!]
+		dateFilter: RangeDate = {}
+		addressFilter: AddressFilter = {}
+	): ProductsCountStatistics!
+
+	productStatusesCountStatistics(
+		branchId: ID!
+		serviceId: ID!
+		dateFilter: RangeDate = {}
+	): ProductStatusesCountStatistics!
+
+	serviceProductsCountStatistics(
+		branchId: ID!
+		statusCode: StatusValue!
+		dateFilter: RangeDate = {}
+	): ServiceProductsCountStatistics!
+
+	branchFinanceStatistics(
+		branchId: ID!
+		dateFilter: RangeDate = {}
+		financeDepartment: FinanceDepartments!
+	): BranchFinanceStatistics!
+
+	serviceSummaryStatistics(
+		year: Int!
+		branchId: [ID!]
+		addressFilter: AddressFilter = {}
+	): [ServiceSummaryStatistics!]!
+
+	socialSetRegistrationStatistics(
+		branchId: [ID!]
+		addressFilter: AddressFilter = {}
+		dateFilter: RangeDate = {}
+	): [SocialSetRegistrationStatistics!]!
+}
+
+# ordersCountStatistics
+type OrdersCountStatistics {
+	totalOrdersCount: Int!
+	specialOrdersCount: Int!
+	simpleOrdersCount: Int!
+	specialOrdersPercent: Float!
+	simpleOrdersPercent: Float!
+}
+
+
+#productsCountStatistics
+type ProductsCountStatistics {
+	totalOrdersCount: Int!
+	totalProductsCount: Int!
+	services: [ProductsServiceInfo!]!
+}
+
+type ProductsServiceInfo {
+	serviceName: String!
+	serviceUnit: String!
+	serviceBranchName: String!
+	serviceProductCount: Int!
+	serviceProductSize: Int!
+	serviceProductPercent: Float!
+}
+
+
+#productStatusesCountStatistics
+type ProductStatusesCountStatistics {
+	totalProductsCount: Int!
+	totalProductSize: Int!
+	serviceName: String
+	serviceUnit: String
+	branchName: String
+	statuses: [ProductsStatusInfo!]!
+}
+
+type ProductsStatusInfo {
+	statusName: String!
+	statusProductCount: Int!
+	statusProductSize: Int!
+	statusProductPercent: Float!
+}
+
+#serviceProductsCountStatistics
+type ServiceProductsCountStatistics {
+	totalProductsCount: Int!
+	statusCode: StatusValue
+	statusName: String
+	branchName: String
+	services: [ServiceProductInfo!]!
+}
+
+type ServiceProductInfo {
+	serviceName: String!
+	serviceUnit: String!
+	serviceProductCount: Int!
+	serviceProductSize: Int!
+	serviceProductPercent: Float!
+}
+
+#branchFinanceStatistics
+type BranchFinanceStatistics {
+	branch: Branch
+	totalIncome: Int!
+	totalIncomeCash: Int!
+	totalIncomeCard: Int!
+
+	totalOutcome: Int!
+	totalOutcomeCash: Int!
+	totalOutcomeCard: Int!
+}
+
+enum FinanceDepartments {
+	debt
+	sale
+	expanse
+}
+
+#serviceSummaryStatistics
+type ServiceSummaryStatistics {
+	serviceId: ID!
+	serviceName: String!
+	branch: Branch!
+	monthlySummary: [MonthlySummary!]!
+}
+
+type MonthlySummary {
+	date: String!
+	count: Int!
+}
+
+# socialSetRegistrationStatistics
+type SocialSetRegistrationStatistics {
+	socialSetId: ID!
+	socialSetName: String!
+	socialSetIcon: String!
+	registrationCount: Int!
+}

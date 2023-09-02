@@ -1,0 +1,89 @@
+type Query {
+	disabledAddresses(addressField: AddressType! addressFilter: AddFilter = {}): [AddressTypes!]!
+}
+
+type Mutation {
+	disableAddress(addressField: AddressType! addressFieldId: [ID!]!): MutationResponses!
+	enableAddress(addressField: AddressType! addressFieldId: [ID!]!): MutationResponses!
+}
+
+type Address {
+	addressId: ID!
+	state: State!
+	region: Region!
+	neighborhood: Neighborhood
+	street: Street
+	area: Area
+	addressHomeNumber: String
+	addressTarget: String
+	addressCreatedAt: DateTime
+}
+
+enum AddressType {
+	branch
+	state
+	region
+	neighborhood
+	street
+	area
+}
+
+union AddressTypes = Branch | State | Region | Neighborhood | Street | Area
+
+input AddFilter {
+	branch: BranchFilter = {}
+	state: StateFilter = {}
+	region: RegionFilter = {}
+	neighborhood: NeighborhoodFilter = {}
+	street: StreetFilter = {}
+	area: AreaFilter = {}
+}
+
+input AddressFilter {
+	stateId: [ID!]
+	regionId: [ID!]
+	neighborhoodId: [ID!]
+	streetId: [ID!]
+	areaId: [ID!]
+}
+
+input AddressInput {
+	stateId: ID!
+	regionId: ID!
+	neighborhoodId: ID
+	streetId: ID
+	areaId: ID
+	homeNumber: String
+	target: String
+}
+
+input BranchFilter {
+	branchId: ID!
+}
+
+input StateFilter {
+	stateId: ID!
+}
+
+input RegionFilter {
+	stateId: ID
+	regionId: ID
+}
+
+input NeighborhoodFilter {
+	regionId: ID
+	neighborhoodId: ID
+}
+
+input StreetFilter {
+	regionId: ID 
+	neighborhoodId: ID 
+	streetId: ID
+}
+
+input AreaFilter {
+	regionId: ID! 
+	neighborhoodId: ID 
+	streetId: ID 
+	areaId: ID
+}

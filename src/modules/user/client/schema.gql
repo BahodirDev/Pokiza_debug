@@ -1,0 +1,56 @@
+type Query {
+	clients(
+		clientId: ID
+		search: String
+		socialSetId: [ID!]
+		clientStatus: [Int!]
+		isDeleted: Boolean = false
+		sort: UserSort = {}
+		pagination: Pagination = {} 
+		addressFilter: AddressFilter = {}
+		userInfoFilter: UserFilter = {}
+	): [Client!]!
+}
+
+type Mutation {
+	addClient(
+		mainContact: Contact!
+		socialSetId: ID!
+		clientStatus: Int
+		clientSummary: String
+		userInfo: UserInput! 
+		userAddress: AddressInput!
+	): MutationResponse!
+
+	changeClient(
+		clientId: ID
+		clientStatus: Int
+		clientSummary: String
+		userInfo: UserInput = {}
+		userAddress: AddressInput = {}
+	): MutationResponse!
+
+	deleteClient(clientId: [ID!]): MutationResponses!
+	restoreClient(clientId: [ID!]): MutationResponses!
+	
+	enterClientPhone(mainContact: Contact!): AuthResponseWithoutType!
+	enterClientPassword(password: Code!): AuthResponse!
+	fillClientData(
+		socialSetId: ID!
+		clientStatus: Int
+		clientSummary: String
+		userInfo: UserInput!
+		userAddress: AddressInput!
+	): AuthResponse!
+}
+
+type Client {
+	clientId: ID!
+	count: Int!
+	clientStatus: Int!
+	userInfo: User!
+	clientSummary: String
+	socialSet: SocialSet!
+	clientCreatedAt: DateTime!
+	clientDeletedAt: DateTime
+}

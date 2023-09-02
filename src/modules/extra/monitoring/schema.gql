@@ -1,0 +1,88 @@
+type Query {
+	monitoring(
+		userId: [ID!]
+		branchId: [ID!]
+		dateFilter: RangeDate = {}
+		pagination: Pagination = {} 
+		sectionFilter: SectionFilter = {}
+		operationType: MonitoringOperationTypes
+	): [Monitoring]!
+	monitoringSections: [MonitoringSection!]!
+}
+
+type Monitoring {
+	branch: Branch
+	user: UserType!
+	oldValue: Any
+	newValue: Any
+	operationType: MonitoringOperationTypes!
+	sectionName: MonitoringSectionNames!
+	sectionId: ID!
+	sectionField: MonitoringSectionFields
+	createdAt: DateTime!
+	count: Int
+}
+
+type MonitoringSection {
+	sectionName: MonitoringSectionNames!
+	sectionFields: [MonitoringSectionFields!]!
+}
+
+input SectionFilter {
+	sectionId: ID
+	sectionName: [MonitoringSectionNames!]
+	sectionField: [MonitoringSectionFields!]
+}
+
+enum MonitoringOperationTypes {
+	added
+	changed
+	deleted
+	restored
+}
+
+enum MonitoringSectionFields {
+	firstName
+	lastName
+	mainContact
+	secondContact
+	birthDate
+	gender
+	status
+	address
+	summary
+	service
+	unit
+	size
+	name
+	price
+	bringTime
+	deliveryHours
+	plan
+	file
+	branch
+	color
+	number
+	unitKeys
+	dateTime
+	expanse
+	moneyAmount
+	receiver
+	sender
+	availability
+}
+
+enum MonitoringSectionNames {
+	clients
+	staffs
+	orders
+	products
+	transports
+	settings
+	services
+	financeOrders
+	financeDebts
+	financeExpanses
+	financeFonds
+	financeMoneys
+}

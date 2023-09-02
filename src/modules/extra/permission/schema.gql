@@ -1,0 +1,45 @@
+type Query {
+	permissionsList: [Permission!]!
+	permissionGroups(groupId: ID): [PermissionGroup!]!
+	permissionsUser(staffId: ID!): [BranchPermission!]!
+}
+
+type Mutation {
+	addPermission(
+		staffId: ID! 
+		branchId: ID! 
+		permissionKeys: [Int!]!
+	): MutationResponses!
+
+	addPermissionGroup(
+		groupName: String! 
+		permissionKeys: [Int!]
+	): MutationResponse!
+
+	deletePermissionGroup(
+		groupId: ID!
+	): MutationResponse!
+
+	changePermissionGroup(
+		groupId: ID! 
+		groupName: String 
+		permissionKeys: [Int!]
+	): MutationResponse!
+}
+
+type Permission {
+	permissionAction: Int!
+	permissionModel: String!
+}
+
+type BranchPermission {
+	branchId: ID!
+	branchName: String!
+	permissionsList: [Permission!]!
+}
+
+type PermissionGroup {
+	groupId: ID!
+	groupName: String!
+	permissionsList: [Permission!]!
+}
